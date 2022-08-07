@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Информация о голосовании</title>
+</head>
+<body>
+    <h1>Голосование {{voting_model.title}}</h1>
+    <section>
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if current_votes >= voting_model.max_votes %}
+                <p>Набрано максимальное количество голосов!</p>
+            {% elif now_date > voting_model.start_date %}
+                <p>Голосование ещё не началось!</p>
+            {% elif now_date > voting_model.end_date %}
+                <p>Голосование закончилось!</p>
+            {% else %}
+                {% for character in voting_model.characters.all %}
+                    <p><input type="radio" name="voting field">{{character.first_name}} {{character.second_name}}</p>
+                {% endfor %}
+                <p><input type="submit" value="Submit"></p>
+            {% endif %}
+
+        </form>
+    </section>
+</body>
+</html>
